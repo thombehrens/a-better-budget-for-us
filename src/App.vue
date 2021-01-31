@@ -48,7 +48,7 @@ export default {
   data() {
     return {
       constants: {
-        annual_income: 153548548
+        annual_revenue: 153548548
       },
       strategies: {
         paycuts: {
@@ -110,7 +110,7 @@ export default {
   computed: {
     deficit_total()
     {
-      return this.constants.annual_income - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
+      return this.constants.annual_revenue - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
     },
     exec_salaries_total_cost()
     {
