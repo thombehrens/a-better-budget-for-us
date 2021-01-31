@@ -1,37 +1,70 @@
 <template>
   <div id="app">
-    <h1>Total Deficit:</h1>
-    <p>${{ total_deficit }}</p>
-    <h1>Layoffs:</h1>
-    <p>${{ layoffs }}</p>
-    <h1>Average Union Salary:</h1>
-    <p>${{ average_union_salary }}</p>
-    <h1>Top Salary:</h1>
-    <p>${{ top_salary }}</p>
+    <h1>Deficit Total:</h1>
+    <p>${{ deficit_total.toLocaleString() }}</p>
+
+    <hr />
+
+    <h2>Exec Staff Total Cost:</h2>
+    <p>${{ exec_salaries_total_cost.toLocaleString() }}</p>
+
+    <p>Adjust percentage of exec salary cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.exec.salary"></VueSlideBar>
+
+    <p>Adjust percentage of exec benefits cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.exec.benefits"></VueSlideBar>
+
+
+    <h2>Union Staff Total Cost:</h2>
+    <p>${{ union_salaries_total_cost.toLocaleString() }}</p>
+
+    <p>Adjust percentage of union salary cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.union.salary"></VueSlideBar>
+
+    <p>Adjust percentage of union benefits cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.union.benefits"></VueSlideBar>
+
+
+    <h2>Other Staff Total Cost:</h2>
+    <p>${{ other_salaries_total_cost.toLocaleString() }}</p>
+
+    <p>Adjust percentage of other salary cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.other.salary"></VueSlideBar>
+
+    <p>Adjust percentage of other benefits cut</p>
+    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.other.benefits"></VueSlideBar>
   </div>
 </template>
 
 <script>
 
+import VueSlideBar from 'vue-slide-bar';
+
 export default {
   name: 'App',
+  components: {
+    VueSlideBar
+  },
   data() {
     return {
-      paycut: 1,
-      hours: 1,
-      furloughs: 0,
-      furlough_vaca: 1,
-      idea_name: '',
-      idea_amount: '',
-      projected: {
-        deficit: -10000000,
-        revenue: 153100000,
-        salaries: 64883100,
-        benefits: 20759050,
-        staff: 800,
-        layoffs: 42,
-        avg_union_salary: 69432,
-        top_salary: 300201,
+      constants: {
+        annual_income: 153548548
+      },
+      strategies: {
+        paycuts: {
+          exec: {
+            salary: 0,
+            benefits: 0
+          },
+          union: {
+            salary: 0,
+            benefits: 0
+          },
+          other: {
+            salary: 0,
+            benefits: 0
+          }
+        }
       },
       workers: {
         types: [
@@ -75,39 +108,34 @@ export default {
     }
   },
   computed: {
-    total_deficit()
+    deficit_total()
     {
-      let total = this.projected.deficit + this.projected.salaries + this.projected.benefits;
-      this.workers.types.forEach((worker_type) => {
-        total -= ((worker_type.salary * worker_type.count * worker_type.count) - (worker_type.benefits * worker_type.count));
-      });
-      return total.toLocaleString();
+      return this.constants.annual_income - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
     },
-    layoffs()
+    exec_salaries_total_cost()
     {
-      let worker_total = 0;
-      this.workers.types.forEach((worker_type) => {
-        worker_total -= (worker_type.salary * worker_type.count * this.hours) - (worker_type.benefits * worker_type.count);
-      });
-      let total = 450000 - this.projected.salaries + this.projected.benefits - worker_total / 107052.6875;
-
-      return total.toLocaleString();
+      return this.getWorkerTypeTotal('exec');
     },
-    average_union_salary()
+    union_salaries_total_cost()
     {
-      const union_types = this.workers.types.filter((worker_type) => worker_type['type'] === 'union');
-      const union_totals = union_types.reduce((a,b) => (b['salary'] * this.hours * this.paycut) + a, 0);
-      const union_count_totals = union_types.reduce((a,b) => b['count'] + a, 0);
-      return union_totals / union_count_totals;
+      return this.getWorkerTypeTotal('union');
     },
-    top_salary()
+    other_salaries_total_cost()
     {
-      const exec = this.workers.types.find((worker_type) => worker_type['name'] === 'exec');
-      return this.projected.top_salary * (exec['salary'] / 225000) * this.hours;
+      return this.getWorkerTypeTotal('other');
     }
   },
   methods: {
-    
+    getWorkerTypeTotal(type)
+    {
+      let total = 0;
+      this.workers.types.filter(worker_type => worker_type.type === type).forEach(worker_type => {
+        const salary = (this.strategies.paycuts[type].salary <= 0) ? worker_type.salary : (worker_type.salary - ((this.strategies.paycuts[type].salary/100) * worker_type.salary));
+        const benefits = (this.strategies.paycuts[type].benefits <= 0) ? worker_type.benefits : (worker_type.benefits - ((this.strategies.paycuts[type].benefits/100) * worker_type.benefits));
+        total += ((salary + benefits) * worker_type.count);
+      });
+      return total;
+    }
   }
 }
 </script>
@@ -120,5 +148,6 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+  padding: 100px 35%;
 }
 </style>
