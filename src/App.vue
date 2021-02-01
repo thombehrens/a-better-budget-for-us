@@ -8,8 +8,7 @@
     <WorkerTypeModule
       :worker_type="worker_type"
       v-for="worker_type in workers.types"
-      :key=worker_type.id
-      v-on:worker-type-update="updateWorkerType">
+      :key=worker_type.id>
     </WorkerTypeModule> 
 
   </div>
@@ -133,12 +132,6 @@ export default {
         }
       });
       return total;
-    },
-    updateWorkerType(worker_type_object)
-    {
-      let worker = this.workers.types.find(worker_type => worker_type.name === worker_type_object.name);
-      worker = worker_type_object;
-      return worker;
     }
   }
 }

@@ -47,10 +47,7 @@ export default {
     worker_type: Object
   },
   methods: {
-      emitData()
-      {
-          this.$emit('worker-type-update', this.worker_type);
-      }
+    //   
   }
 }
 </script>
