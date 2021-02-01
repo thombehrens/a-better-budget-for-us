@@ -8,7 +8,7 @@
     <WorkerTypeModule
       :worker_type="worker_type"
       v-for="worker_type in workers.types"
-      :key=worker_type.name
+      :key=worker_type.id
       v-on:worker-type-update="updateWorkerType">
     </WorkerTypeModule> 
 
