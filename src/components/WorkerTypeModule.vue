@@ -4,6 +4,23 @@
     <h2>{{ worker_type.name }}</h2>
     <p><i>{{ worker_type.description }}</i></p>
 
+    <ul class="props">
+        <li class="prop">
+            <label :for="worker_type.name + '_salary_input'">Average Salary: </label>
+            <input :id="worker_type.name + '_salary_input'" type="number" v-model="worker_type.salary">
+        </li>
+
+        <li class="prop">
+            <label :for="worker_type.name + '_benefits_input'">Average Benefits: </label>
+            <input :id="worker_type.name + '_cenefits_input'" type="number" v-model="worker_type.benefits">
+        </li>
+
+        <li class="prop">
+            <label :for="worker_type.count + '_count_input'">Number of Staff: </label>
+            <input :id="worker_type.count + '_counts_input'" type="number" v-model="worker_type.count">
+        </li>
+    </ul>
+
     <div class="solution">
         <p>Adjust percentage of exec salary cut</p>
         <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.salary_cut" @input="emitData"></VueSlideBar>
