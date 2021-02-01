@@ -29,25 +29,10 @@ export default {
       constants: {
         annual_revenue: 153548548
       },
-      strategies: {
-        paycuts: {
-          exec: {
-            salary: 0,
-            benefits: 0
-          },
-          union: {
-            salary: 0,
-            benefits: 0
-          },
-          other: {
-            salary: 0,
-            benefits: 0
-          }
-        }
-      },
       workers: {
         types: [
           {
+            id: "exec",
             name: 'Exec',
             description: 'Add description...',
             type: 'exec',
@@ -60,6 +45,7 @@ export default {
             }
           },
           {
+            id: "sea",
             name: 'Union: SEA',
             description: 'Add description...',
             type: 'union',
@@ -72,6 +58,7 @@ export default {
             }
           },
           {
+            id: "pwu_nat",
             name: 'Union: PWU National',
             description: 'Add description...',
             type: 'union',
@@ -84,6 +71,7 @@ export default {
             }
           },
           {
+            id: "pwu_chapter",
             name: 'Union: PWU Chapter',
             description: 'Add description...',
             type: 'union',
@@ -96,6 +84,7 @@ export default {
             }
           },
           {
+            id: "other",
             name: 'Other',
             description: 'Add description...',
             type: 'other',
@@ -135,11 +124,11 @@ export default {
       let total = 0;
       this.workers.types.filter(worker_type => worker_type.type === type).forEach(worker_type => {
         if (typeof prop === 'undefined' || prop === 'salary') {
-          const salary = (this.strategies.paycuts[type].salary <= 0) ? worker_type.salary : (worker_type.salary - ((this.strategies.paycuts[type].salary/100) * worker_type.salary));
+          const salary = (worker_type.strategies.salary_cut <= 0) ? worker_type.salary : (worker_type.salary - ((worker_type.strategies.salary_cut/100) * worker_type.salary));
           total += salary * worker_type.count;
         }
         if (typeof prop === 'undefined' || prop === 'benefits') {
-          const benefits = (this.strategies.paycuts[type].benefits <= 0) ? worker_type.benefits : (worker_type.benefits - ((this.strategies.paycuts[type].benefits/100) * worker_type.benefits));
+          const benefits = (worker_type.strategies.benefit_cut <= 0) ? worker_type.benefits : (worker_type.benefits - ((worker_type.strategies.benefit_cut/100) * worker_type.benefits));
           total += benefits * worker_type.count;
         }
       });
