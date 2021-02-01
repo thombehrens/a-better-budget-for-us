@@ -1,49 +1,28 @@
 <template>
   <div id="app">
     <h1>Deficit Total:</h1>
-    <p>${{ deficit_total.toLocaleString() }}</p>
+    <h3><b>${{ deficit_total.toLocaleString() }}</b></h3>
 
     <hr />
 
-    <h2>Exec Staff Total Cost:</h2>
-    <p>${{ exec_salaries_total_cost.toLocaleString() }}</p>
+    <WorkerTypeModule
+      :worker_type="worker_type"
+      v-for="worker_type in workers.types"
+      :key=worker_type.name
+      v-on:worker-type-update="updateWorkerType">
+    </WorkerTypeModule> 
 
-    <p>Adjust percentage of exec salary cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.exec.salary"></VueSlideBar>
-
-    <p>Adjust percentage of exec benefits cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.exec.benefits"></VueSlideBar>
-
-
-    <h2>Union Staff Total Cost:</h2>
-    <p>${{ union_salaries_total_cost.toLocaleString() }}</p>
-
-    <p>Adjust percentage of union salary cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.union.salary"></VueSlideBar>
-
-    <p>Adjust percentage of union benefits cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.union.benefits"></VueSlideBar>
-
-
-    <h2>Other Staff Total Cost:</h2>
-    <p>${{ other_salaries_total_cost.toLocaleString() }}</p>
-
-    <p>Adjust percentage of other salary cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.other.salary"></VueSlideBar>
-
-    <p>Adjust percentage of other benefits cut</p>
-    <VueSlideBar :min="0" :max="100" v-model="strategies.paycuts.other.benefits"></VueSlideBar>
   </div>
 </template>
 
 <script>
 
-import VueSlideBar from 'vue-slide-bar';
+import WorkerTypeModule from './components/WorkerTypeModule.vue';
 
 export default {
   name: 'App',
   components: {
-    VueSlideBar
+    WorkerTypeModule
   },
   data() {
     return {
@@ -69,39 +48,64 @@ export default {
       workers: {
         types: [
           {
-            name: 'exec',
+            name: 'Exec',
+            description: 'Add description...',
             type: 'exec',
             salary: 225000,
             count: 30,
-            benefits: 56250
+            benefits: 56250,
+            strategies: {
+              salary_cut: 0,
+              benefit_cut: 0
+            }
           },
           {
-            name: 'sea',
+            name: 'Union: SEA',
+            description: 'Add description...',
             type: 'union',
             salary: 77500,
             count: 120,
-            benefits: 27125
+            benefits: 27125,
+            strategies: {
+              salary_cut: 0,
+              benefit_cut: 0
+            }
           },
           {
-            name: 'pwu_nat',
+            name: 'Union: PWU National',
+            description: 'Add description...',
             type: 'union',
             salary: 66666,
             count: 200,
-            benefits: 23333
+            benefits: 23333,
+            strategies: {
+              salary_cut: 0,
+              benefit_cut: 0
+            }
           },
           {
-            name: 'pwu_cha',
+            name: 'Union: PWU Chapter',
+            description: 'Add description...',
             type: 'union',
             salary: 66666,
             count: 150,
-            benefits: 23333
+            benefits: 23333,
+            strategies: {
+              salary_cut: 0,
+              benefit_cut: 0
+            }
           },
           {
-            name: 'other',
+            name: 'Other',
+            description: 'Add description...',
             type: 'other',
             salary: 85000,
             count: 300,
-            benefits: 25500
+            benefits: 25500,
+            strategies: {
+              salary_cut: 0,
+              benefit_cut: 0
+            }
           }
         ]
       }
@@ -141,6 +145,12 @@ export default {
       });
       return total;
     },
+    updateWorkerType(worker_type_object)
+    {
+      let worker = this.workers.types.find(worker_type => worker_type.name === worker_type_object.name);
+      worker = worker_type_object;
+      return worker;
+    }
   }
 }
 </script>
