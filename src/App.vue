@@ -5,23 +5,36 @@
 
     <hr />
 
-    <WorkerTypeModule
+    <WorkerTypeModuleCollection
+    title="Exec"
+    description="Add description"
+    :worker_types="getWorkerType('exec')">
+    </WorkerTypeModuleCollection>
+
+    <WorkerTypeModuleCollection
+    title="Staff"
+    description="Add description"
+    :worker_types="getWorkerType('union')">
+    </WorkerTypeModuleCollection>
+
+    <!-- <WorkerTypeModule
       :worker_type="worker_type"
       v-for="worker_type in workers.types"
       :key=worker_type.id>
-    </WorkerTypeModule> 
+    </WorkerTypeModule>  -->
 
   </div>
 </template>
 
 <script>
 
-import WorkerTypeModule from './components/WorkerTypeModule.vue';
+import WorkerTypeModuleCollection from './components/WorkerTypeModuleCollection.vue';
 
 export default {
   name: 'App',
   components: {
-    WorkerTypeModule
+    // WorkerTypeModule,
+    WorkerTypeModuleCollection
   },
   data() {
     return {
@@ -119,6 +132,10 @@ export default {
     }
   },
   methods: {
+    getWorkerType(type)
+    {
+      return this.workers.types.filter(worker_type => worker_type.type === type);
+    },
     getWorkerTypeTotal(type, prop)
     {
       let total = 0;
