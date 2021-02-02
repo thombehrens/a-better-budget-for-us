@@ -26,7 +26,8 @@ export default {
   data() {
     return {
       constants: {
-        annual_revenue: 153548548
+        annual_revenue: 153548548,
+        labor_expenses: 80000000,
       },
       workers: {
         types: [
@@ -102,7 +103,7 @@ export default {
   computed: {
     deficit_total()
     {
-      return this.constants.annual_revenue - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
+      return this.constants.labor_expenses - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
     },
     exec_salaries_total_cost()
     {
