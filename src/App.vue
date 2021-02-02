@@ -1,20 +1,29 @@
 <template>
   <div id="app">
-    <h1>Deficit Total:</h1>
+    <h1>Projected Deficit:</h1>
     <h3><b>${{ deficit_total.toLocaleString() }}</b></h3>
+    
+    <h1>Projected Staff Exits:</h1>
+    <h3><b>{{ staff_exits.toLocaleString() }}</b></h3>
 
     <hr />
 
     <WorkerTypeModuleCollection
-    title="Exec"
+    title="Executives"
     description="Add description"
     :worker_types="getWorkerType('exec')">
     </WorkerTypeModuleCollection>
 
     <WorkerTypeModuleCollection
-    title="Staff"
+    title="Union Staff"
     description="Add description"
     :worker_types="getWorkerType('union')">
+    </WorkerTypeModuleCollection>
+
+    <WorkerTypeModuleCollection
+    title="Other Staff"
+    description="Add description"
+    :worker_types="getWorkerType('other')">
     </WorkerTypeModuleCollection>
 
   </div>
@@ -32,14 +41,23 @@ export default {
   data() {
     return {
       constants: {
-        annual_revenue: 153548548,
-        labor_expenses: 80000000,
+        annual_revenue: 153100000,
+        annual_expenses: 163800000,
+        labor_expenses: 85642150,
+        avg_compensation: 107052.69,
+        avg_severance: 18096.90,
+        percent_deficit_staff: 0.5,
+        top_salary: 300201,
+        work_days: 207
+      },
+      policies: {
+        vacation_for_furlough: 1.0
       },
       workers: {
         types: [
           {
             id: "exec",
-            name: 'Exec',
+            name: 'Executives',
             description: 'Add description...',
             type: 'exec',
             salary: 225000,
@@ -52,7 +70,7 @@ export default {
           },
           {
             id: "sea",
-            name: 'Union: SEA',
+            name: 'SEA Union Workers',
             description: 'Add description...',
             type: 'union',
             salary: 77500,
@@ -65,7 +83,7 @@ export default {
           },
           {
             id: "pwu_nat",
-            name: 'Union: PWU National',
+            name: 'National PWU Workers',
             description: 'Add description...',
             type: 'union',
             salary: 66666,
@@ -78,7 +96,7 @@ export default {
           },
           {
             id: "pwu_chapter",
-            name: 'Union: PWU Chapter',
+            name: 'Chapter PWU Workers',
             description: 'Add description...',
             type: 'union',
             salary: 66666,
@@ -91,7 +109,7 @@ export default {
           },
           {
             id: "other",
-            name: 'Other',
+            name: 'Other Staff',
             description: 'Add description...',
             type: 'other',
             salary: 85000,
@@ -109,7 +127,7 @@ export default {
   computed: {
     deficit_total()
     {
-      return this.constants.labor_expenses - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)
+      return (this.constants.annual_revenue - this.constants.annual_expenses) + (this.constants.labor_expenses - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost))
     },
     exec_salaries_total_cost()
     {
@@ -122,6 +140,10 @@ export default {
     other_salaries_total_cost()
     {
       return this.getWorkerTypeTotal('other');
+    },
+    staff_exits()
+    {
+      return (this.deficit_total / (this.constants.avg_compensation - this.constants.avg_severance)) * this.constants.percent_deficit_staff
     }
   },
   methods: {
@@ -134,11 +156,11 @@ export default {
       let total = 0;
       this.workers.types.filter(worker_type => worker_type.type === type).forEach(worker_type => {
         if (typeof prop === 'undefined' || prop === 'salary') {
-          const salary = (worker_type.strategies.salary_cut <= 0) ? worker_type.salary : (worker_type.salary - ((worker_type.strategies.salary_cut/100) * worker_type.salary));
+          const salary = (worker_type.strategies.salary_cut <= 0) ? worker_type.salary : (((100-worker_type.strategies.salary_cut)/100) * worker_type.salary);
           total += salary * worker_type.count;
         }
         if (typeof prop === 'undefined' || prop === 'benefits') {
-          const benefits = (worker_type.strategies.benefit_cut <= 0) ? worker_type.benefits : (worker_type.benefits - ((worker_type.strategies.benefit_cut/100) * worker_type.benefits));
+          const benefits = (worker_type.strategies.benefit_cut <= 0) ? worker_type.benefits : (((100-worker_type.strategies.benefit_cut)/100) * worker_type.benefits);
           total += benefits * worker_type.count;
         }
       });
