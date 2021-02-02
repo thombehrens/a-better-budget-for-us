@@ -25,12 +25,12 @@
 
     <div class="solution">
         <p>Adjust percentage of salary cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="strategies.salary_cut"></VueSlideBar>
+        <VueSlideBar :min="0" :max="100" v-model="strategies.salary_cut" @input="updateStatSolution('salary')"></VueSlideBar>
     </div>
 
     <div class="solution">
         <p>Adjust percentage of benefits cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="strategies.benefit_cut"></VueSlideBar>
+        <VueSlideBar :min="0" :max="100" v-model="strategies.benefit_cut" @input="updateStatSolution('benefit')"></VueSlideBar>
     </div>
 
   </div>
@@ -59,7 +59,13 @@ export default {
     }
   },
   methods: {
-    //   
+    updateStatSolution(solution)
+    {
+      const solution_name = solution + "_cut";
+      this.worker_types.forEach(worker_type => {
+        worker_type.strategies[solution_name] = this.strategies[solution_name];
+      });
+    }
   }
 }
 </script>
