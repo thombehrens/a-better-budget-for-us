@@ -67,12 +67,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .solution {
-        background-color: #eee;
-        margin-bottom: 15px;
-        padding: 25px;
+        margin: 15px auto 15px;
+        max-width: 300px;
     }
     .solution p {
         margin: 0px;
+    }
+    .worker-type-module {
+      margin-bottom: 100px;
     }
     .worker_type_stats {
       margin: 0px auto;
