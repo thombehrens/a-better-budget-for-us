@@ -23,12 +23,12 @@
 
     <div class="solution">
         <p>Adjust percentage of exec salary cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.salary_cut" @input="emitData"></VueSlideBar>
+        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.salary_cut"></VueSlideBar>
     </div>
 
     <div class="solution">
         <p>Adjust percentage of exec benefits cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.benefit_cut" @input="emitData"></VueSlideBar>
+        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.benefit_cut"></VueSlideBar>
     </div>
 
   </div>
