@@ -127,7 +127,7 @@ export default {
   computed: {
     deficit_total()
     {
-      return ((this.constants.annual_revenue - this.constants.annual_expenses) + (this.constants.labor_expenses - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost)) / 2)
+      return (this.constants.annual_revenue - this.constants.annual_expenses) + (this.constants.labor_expenses - (this.exec_salaries_total_cost + this.union_salaries_total_cost + this.other_salaries_total_cost))
     },
     exec_salaries_total_cost()
     {
