@@ -17,12 +17,6 @@
     :worker_types="getWorkerType('union')">
     </WorkerTypeModuleCollection>
 
-    <!-- <WorkerTypeModule
-      :worker_type="worker_type"
-      v-for="worker_type in workers.types"
-      :key=worker_type.id>
-    </WorkerTypeModule>  -->
-
   </div>
 </template>
 
@@ -33,7 +27,6 @@ import WorkerTypeModuleCollection from './components/WorkerTypeModuleCollection.
 export default {
   name: 'App',
   components: {
-    // WorkerTypeModule,
     WorkerTypeModuleCollection
   },
   data() {
