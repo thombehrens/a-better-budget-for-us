@@ -23,32 +23,40 @@
       </li>
     </ul>
 
-    <!-- <div class="solution">
-        <p>Adjust percentage of exec salary cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.salary_cut"></VueSlideBar>
+    <div class="solution">
+        <p>Adjust percentage of salary cut</p>
+        <VueSlideBar :min="0" :max="100" v-model="strategies.salary_cut"></VueSlideBar>
     </div>
 
     <div class="solution">
-        <p>Adjust percentage of exec benefits cut</p>
-        <VueSlideBar :min="0" :max="100" v-model="worker_type.strategies.benefit_cut"></VueSlideBar>
-    </div> -->
+        <p>Adjust percentage of benefits cut</p>
+        <VueSlideBar :min="0" :max="100" v-model="strategies.benefit_cut"></VueSlideBar>
+    </div>
 
   </div>
 </template>
 
 <script>
 
-// import VueSlideBar from 'vue-slide-bar'; 
+import VueSlideBar from 'vue-slide-bar'; 
 
 export default {
   name: 'WorkerTypeModuleCollection',
   components: {
-      // VueSlideBar
+      VueSlideBar
   },
   props: {
     title: String,
     description: String,
     worker_types: Array
+  },
+  data() {
+    return {
+      strategies: {
+        salary_cut: 0,
+        benefit_cut: 0
+      }
+    }
   },
   methods: {
     //   
