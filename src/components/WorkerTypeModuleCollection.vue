@@ -83,6 +83,7 @@ export default {
       margin-bottom: 100px;
     }
     .worker_type_stats {
+      display: none;
       margin: 0px auto;
       max-width: 400px;
       text-align: center;
