@@ -13,7 +13,6 @@
 
     <hr />
 
-    <h2 class="section-title">Adjust Staff Salaries</h2>
     <div id="worker-type-modules">
       <WorkerTypeModuleCollection
       title="Executives"
