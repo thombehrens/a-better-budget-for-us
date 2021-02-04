@@ -26,16 +26,27 @@
     :worker_types="getWorkerType('other')">
     </WorkerTypeModuleCollection>
 
+    <div id="staff-furlough">
+        <h2>How many unpaid furlough days should staff be required to take?</h2>
+        <VueSlideBar :min="0" :max="12" v-model="policies.furlough.num_days"></VueSlideBar>
+        <h3>Should staff be able to use vacation days instead of furlough days</h3>
+        <toggle-button v-model="policies.furlough.vacation_for_furlough" :labels="{checked: 'Yes', unchecked: 'No'}" :width="100" :height="50" :fontSize="18" />
+    </div>
+
   </div>
 </template>
 
 <script>
 
+import VueSlideBar from 'vue-slide-bar'; 
+import { ToggleButton } from 'vue-js-toggle-button'
 import WorkerTypeModuleCollection from './components/WorkerTypeModuleCollection.vue';
 
 export default {
   name: 'App',
   components: {
+    VueSlideBar,
+    ToggleButton,
     WorkerTypeModuleCollection
   },
   data() {
@@ -51,7 +62,12 @@ export default {
         work_days: 207
       },
       policies: {
-        vacation_for_furlough: 1.0
+        furlough: {
+          vacation_for_furlough: false,
+          num_days: 0,
+          can_take_vacation_percentage: 0.7,
+          cannot_take_vacation_percentage: 1
+        }
       },
       workers: {
         types: [
@@ -156,7 +172,7 @@ export default {
       let total = 0;
       this.workers.types.filter(worker_type => worker_type.type === type).forEach(worker_type => {
         if (typeof prop === 'undefined' || prop === 'salary') {
-          const salary = (worker_type.strategies.salary_cut <= 0) ? worker_type.salary : (((100-worker_type.strategies.salary_cut)/100) * worker_type.salary);
+          const salary = (worker_type.strategies.salary_cut <= 0) ? this.getFurloughAdjustedSalary(worker_type.salary) : (((100-worker_type.strategies.salary_cut)/100) * this.getFurloughAdjustedSalary(worker_type.salary));
           total += salary * worker_type.count;
         }
         if (typeof prop === 'undefined' || prop === 'benefits') {
@@ -165,6 +181,11 @@ export default {
         }
       });
       return total;
+    },
+    getFurloughAdjustedSalary(salary)
+    {
+      const vacation_adjustment = (this.policies.furlough.vacation_for_furlough) ? this.policies.furlough.can_take_vacation_percentage : this.policies.furlough.cannot_take_vacation_percentage;
+      return (((this.constants.work_days - this.policies.furlough.num_days) / this.constants.work_days) * salary) * vacation_adjustment;
     }
   }
 }
