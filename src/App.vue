@@ -10,27 +10,27 @@
 
     <WorkerTypeModuleCollection
     title="Executives"
-    description="Add description"
+    description="The top 30 highest-paid staff members, averaging over $200,000 in total annual compensation."
     :worker_types="getWorkerType('exec')">
     </WorkerTypeModuleCollection>
 
     <WorkerTypeModuleCollection
     title="Union Staff"
-    description="Add description"
+    description="Workers represented by the Progressive Workers Union (PWU) or Sierra Employee Alliance (SEA)."
     :worker_types="getWorkerType('union')">
     </WorkerTypeModuleCollection>
 
     <WorkerTypeModuleCollection
     title="Other Staff"
-    description="Add description"
+    description="Individuals not in executive or union positions, including managers, lawyers, HR, and FinOps."
     :worker_types="getWorkerType('other')">
     </WorkerTypeModuleCollection>
 
     <div id="staff-furlough">
         <h2>How many unpaid furlough days should staff be required to take?</h2>
         <VueSlideBar :min="0" :max="12" v-model="policies.furlough.num_days"></VueSlideBar>
-        <h3>Should staff be able to use vacation days instead of furlough days</h3>
-        <toggle-button v-model="policies.furlough.vacation_for_furlough" :labels="{checked: 'Yes', unchecked: 'No'}" :width="100" :height="50" :fontSize="18" />
+        <h3>Should staff be able to use paid vacation time to replace their furlough days?</h3>
+        <toggle-button v-model="policies.furlough.vacation_for_furlough" :labels="{checked: 'Yes', unchecked: 'No'}" :width="90" :height="40" :fontSize="18" />
     </div>
 
   </div>
@@ -185,7 +185,7 @@ export default {
     getFurloughAdjustedSalary(salary)
     {
       const vacation_adjustment = (this.policies.furlough.vacation_for_furlough) ? this.policies.furlough.can_take_vacation_percentage : this.policies.furlough.cannot_take_vacation_percentage;
-      return (((this.constants.work_days - this.policies.furlough.num_days) / this.constants.work_days) * salary) * vacation_adjustment;
+      return ((this.constants.work_days - (this.policies.furlough.num_days * vacation_adjustment)) / this.constants.work_days) * salary;
     }
   }
 }

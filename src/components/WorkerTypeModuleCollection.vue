@@ -13,7 +13,7 @@
           </li>
           <li class="stat">
             <label :for="worker_type.name + '_benefits_input'">Average Benefits: </label>
-            <input :id="worker_type.name + '_cenefits_input'" type="number" v-model="worker_type.benefits">
+            <input :id="worker_type.name + '_benefits_input'" type="number" v-model="worker_type.benefits">
           </li>
           <li class="stat">
             <label :for="worker_type.count + '_count_input'">Number of Staff: </label>
