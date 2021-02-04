@@ -13,23 +13,26 @@
 
     <hr />
 
-    <WorkerTypeModuleCollection
-    title="Executives"
-    description="Add description"
-    :worker_types="getWorkerType('exec')">
-    </WorkerTypeModuleCollection>
+    <h2 class="section-title">Adjust Staff Salaries</h2>
+    <div id="worker-type-modules">
+      <WorkerTypeModuleCollection
+      title="Executives"
+      description="Add description"
+      :worker_types="getWorkerType('exec')">
+      </WorkerTypeModuleCollection>
 
-    <WorkerTypeModuleCollection
-    title="Union Staff"
-    description="Add description"
-    :worker_types="getWorkerType('union')">
-    </WorkerTypeModuleCollection>
+      <WorkerTypeModuleCollection
+      title="Union Staff"
+      description="Add description"
+      :worker_types="getWorkerType('union')">
+      </WorkerTypeModuleCollection>
 
-    <WorkerTypeModuleCollection
-    title="Other Staff"
-    description="Add description"
-    :worker_types="getWorkerType('other')">
-    </WorkerTypeModuleCollection>
+      <WorkerTypeModuleCollection
+      title="Other Staff"
+      description="Add description"
+      :worker_types="getWorkerType('other')">
+      </WorkerTypeModuleCollection>
+    </div>
 
     <div id="staff-furlough">
         <h2>How many unpaid furlough days should staff be required to take?</h2>
@@ -218,5 +221,15 @@ export default {
 }
 #projections .projection .value {
   font-size: 25px;
+}
+#worker-type-modules {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.section-title {
+  margin-top: 100px;
+  text-align: left;
 }
 </style>
