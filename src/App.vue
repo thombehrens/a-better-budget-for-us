@@ -172,7 +172,7 @@ export default {
       let total = 0;
       this.workers.types.filter(worker_type => worker_type.type === type).forEach(worker_type => {
         if (typeof prop === 'undefined' || prop === 'salary') {
-          const salary = (worker_type.strategies.salary_cut <= 0) ? worker_type.salary : (((100-worker_type.strategies.salary_cut)/100) * worker_type.salary);
+          const salary = (worker_type.strategies.salary_cut <= 0) ? this.getFurloughAdjustedSalary(worker_type.salary) : (((100-worker_type.strategies.salary_cut)/100) * this.getFurloughAdjustedSalary(worker_type.salary));
           total += salary * worker_type.count;
         }
         if (typeof prop === 'undefined' || prop === 'benefits') {
@@ -181,6 +181,11 @@ export default {
         }
       });
       return total;
+    },
+    getFurloughAdjustedSalary(salary)
+    {
+      const vacation_adjustment = (this.policies.furlough.vacation_for_furlough) ? this.policies.furlough.can_take_vacation_percentage : this.policies.furlough.cannot_take_vacation_percentage;
+      return (((this.constants.work_days - this.policies.furlough.num_days) / this.constants.work_days) * salary) * vacation_adjustment;
     }
   }
 }
