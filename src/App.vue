@@ -1,10 +1,15 @@
 <template>
   <div id="app">
-    <h1>Projected Deficit:</h1>
-    <h3><b>${{ deficit_total.toLocaleString() }}</b></h3>
-    
-    <h1>Projected Staff Exits:</h1>
-    <h3><b>{{ staff_exits.toLocaleString() }}</b></h3>
+    <div id="projections">
+      <div class="projection">
+        <h1 class="title">Projected<br />Deficit</h1>
+        <h3 class="value"><b>${{ deficit_total.toLocaleString() }}</b></h3>
+      </div>
+      <div class="projection">
+        <h1 class="title">Projected<br />Staff Exits</h1>
+        <h3 class="value"><b>{{ staff_exits.toLocaleString() }}</b></h3>
+      </div>
+    </div>
 
     <hr />
 
@@ -30,7 +35,7 @@
         <h2>How many unpaid furlough days should staff be required to take?</h2>
         <VueSlideBar :min="0" :max="12" v-model="policies.furlough.num_days"></VueSlideBar>
         <h3>Should staff be able to use vacation days instead of furlough days</h3>
-        <toggle-button v-model="policies.furlough.vacation_for_furlough" :labels="{checked: 'Yes', unchecked: 'No'}" :width="100" :height="50" :fontSize="18" />
+        <toggle-button v-model="policies.furlough.vacation_for_furlough" :labels="{checked: 'Yes', unchecked: 'No'}" :width="90" :height="40" :fontSize="18" />
     </div>
 
   </div>
@@ -198,7 +203,20 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-  padding: 100px 35%;
+  margin: 60px auto;
+  max-width: 1000px;
+  padding: 100px 25px;
+}
+
+#projections {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+#projections .projection .title {
+  font-size: 50px;
+}
+#projections .projection .value {
+  font-size: 25px;
 }
 </style>
