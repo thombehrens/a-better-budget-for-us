@@ -24,12 +24,12 @@
     </ul>
 
     <div class="solution">
-        <p>Adjust percentage of salary cut</p>
+        <p><b>Adjust percentage of salary cut</b></p>
         <VueSlideBar :min="0" :max="100" v-model="strategies.salary_cut" @input="updateStatSolution('salary')"></VueSlideBar>
     </div>
 
     <div class="solution">
-        <p>Adjust percentage of benefits cut</p>
+        <p><b>Adjust percentage of benefits cut</b></p>
         <VueSlideBar :min="0" :max="100" v-model="strategies.benefit_cut" @input="updateStatSolution('benefit')"></VueSlideBar>
     </div>
 
